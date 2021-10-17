@@ -36,5 +36,5 @@ jobs:
     name:  Vulnerability Scan
     needs: login
     uses: azure/container-scan@v0
-      with:
+    with:
       image-name: ddso/scanner:latest
