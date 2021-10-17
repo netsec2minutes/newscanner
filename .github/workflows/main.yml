@@ -32,9 +32,4 @@ jobs:
           push: true
           tags: ddso/scanner:latest     
 
-  scan:
-    name:  Vulnerability Scan
-    needs: login
-    uses: azure/container-scan@v0
-    with:
-      image-name: ddso/scanner:latest
+
