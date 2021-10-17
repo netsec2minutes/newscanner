@@ -22,7 +22,7 @@ jobs:
       - uses: docker/login-action@v1 
         with:
           username: ddso
-          password: a7990fdb-7a9f-440c-8fa7-64f9e87b5a69
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       
         
       - name: Build and push
