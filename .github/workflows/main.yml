@@ -15,6 +15,7 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ddso/scanner:latest 
   scan:
+    steps:  
     - uses: crazy-max/docker-scan-action@v1.0.2
       with:
         # Trivy CLI version (eg. v0.20.0)
