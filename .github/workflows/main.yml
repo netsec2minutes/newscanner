@@ -15,21 +15,43 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ddso/scanner:latest 
 
-  login:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: docker/login-action@v1 
-        with:
-          username: ddso
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+- name: Docker Scan
+  # You may pin to the exact commit or the version.
+  # uses: crazy-max/docker-scan-action@efd7e59047c00d00fa96c6cc5ea5df92f5a06327
+  uses: crazy-max/docker-scan-action@v1.0.2
+  with:
+    # Trivy CLI version (eg. v0.20.0)
+    trivy_version: # optional, default is latest
+    # Docker image to scan (eg. alpine:3.7)
+    image: # optional
+    # Docker image tarball path to scan
+    tarball: # optional
+    # Dockerfile required to generate a sarif report
+    dockerfile: # optional
+    # Report vulnerabilities of provided level or higher (default: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL)
+    severity: # optional
+    # Defines threshold for severity
+    severity_threshold: # optional
+    # Create GitHub annotations in your workflow for vulnerabilities discovered
+    annotations: # optional, default is false
+    # GitHub Token as provided by secrets
+    github_token: # optional, default is ${{ github.token }}
+
+  #login:
+  #  needs: build
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - uses: docker/login-action@v1 
+  #      with:
+  #        username: ddso
+  #        password: ${{ secrets.DOCKERHUB_TOKEN }}
       
         
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ddso/scanner:latest     
+  #    - name: Build and push
+  #      id: docker_build
+  #      uses: docker/build-push-action@v2
+  #      with:
+  #        push: true
+  #        tags: ddso/scanner:latest     
 
 
