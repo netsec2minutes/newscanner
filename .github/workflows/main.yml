@@ -33,8 +33,7 @@ jobs:
         # Defines threshold for severity
         severity_threshold: # optional
         # Create GitHub annotations in your workflow for vulnerabilities discovered
-        annotations: # optional, default is false
-        # GitHub Token as provided by secrets
+        annotations: false
         github_token: # optional, default is ${{ github.token }}
   #login:
   #  needs: build
