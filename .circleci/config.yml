@@ -1,39 +1,32 @@
 version: 2.1
 orbs:
-  snyk: snyk/snyk@0.0.8
+  snyk: snyk/snyk@0.0.11
 jobs:
-  build_test:
+  run_tests:
     docker:
-      - image: circleci/python:3.7.4
+      - image: circleci/node:12
     steps:
       - checkout
       - run:
-          name: Install Python Dependencies
+          name: Install npm dependencies
           command: |
-            echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV && source $BASH_ENV
-      - snyk/scan
+            sudo npm install -g
       - run:
           name: Run Unit Tests
           command: |
-            pytest
-  build_push_image:
+            ./node_modules/mocha/bin/mocha test/ --reporter mochawesome --reporter-options reportDir=test-results,reportFilename=test-results
+  vulnerability_scan:
     docker:
-      - image: circleci/python:3.7.4
+      - image: circleci/node:12
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
       - run:
-          name: Build and Push Docker image to Docker Hub
+          name: Install npm dependencies
           command: |
-            echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV
-            echo 'export TAG=${CIRCLE_SHA1}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=orb-snyk' >> $BASH_ENV && source $BASH_ENV
-            docker build . --file Dockerfile --tag ddso/scanner:latest
+            sudo npm install -g
+      - snyk/scan
 workflows:
-  build_test_deploy:
+  build_test:
     jobs:
-      - build_test
-      - build_push_image:
-          requires:
-            - build_test
+      - run_tests
+      - vulnerability_scan
