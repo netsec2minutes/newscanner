@@ -30,8 +30,6 @@ jobs:
             echo 'export PATH=~$PATH:~/.local/bin' >> $BASH_ENV
             echo 'export TAG=${CIRCLE_SHA1}' >> $BASH_ENV
             echo 'export IMAGE_NAME=orb-snyk' >> $BASH_ENV && source $BASH_ENV
-            pip install --user -r requirements.txt
-            pyinstaller -F hello_world.py
             docker build . --file Dockerfile --tag ddso/scanner:latest
 workflows:
   build_test_deploy:
